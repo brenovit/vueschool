@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Vue Fundamentals</title>
+    <link rel="stylesheet" href="main.css"></link>
+    <script src="http://unpkg.com/vue"></script>
+  </head>
+  <body>
+    <div id="root">
+      <h1>{{ header.toLocaleUpperCase() }}</h1>
+      <input v-model="newItem" type="text" placeholder="Add a item" v-on:keyup.enter="addItem()"/>
+      <ul>
+        <li v-for="item in shopItems">
+          {{ item }}
+        </li>
+      </ul>
+    </div>
+    <script>
+      var vue = new Vue({
+        el: "#root",
+        data: {
+          header: "shopping list",
+          newItem: "",
+          shopItems: ["10 cokes", "5 hats", "15 cups"]
+        },
+        methods: {
+          addItem(){
+            this.shopItems.push(this.newItem);
+            this.newItem = "";
+          }
+        }
+      });
+    </script>
+  </body>
+</html>
