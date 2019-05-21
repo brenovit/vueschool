@@ -3,18 +3,49 @@
   <head>
     <meta charset="UTF-8" />
     <title>Vue Fundamentals</title>
-    <link rel="stylesheet" href="main.css"></link>
+    <link rel="stylesheet" href="main.css" />
     <script src="http://unpkg.com/vue"></script>
   </head>
   <body>
     <div id="root">
-      <h1>{{ header.toLocaleUpperCase() }}</h1>
-      <input v-model="newItem" type="text" placeholder="Add a item" v-on:keyup.enter="addItem()"/>
+      <div class="header">
+        <h1>{{ header.toLocaleUpperCase() }}</h1>
+        <button
+          v-if="state === 'default'"
+          class="btn btn-default"
+          @click="changeState('edit')"
+        >
+          Add Item
+        </button>
+        <button v-else class="btn btn-cancel" @click="changeState('default')">
+          Cancel
+        </button>
+      </div>
+      <div class="add-item-form" v-if="state === 'edit'">
+        <input
+          v-model="newItem"
+          type="text"
+          placeholder="Add a item"
+          @keyup.enter="addItem()"
+        />
+        <button
+          class="btn btn-primary"
+          v-bind:disabled="newItem.length === 0"
+          @click="addItem()"
+        >
+          Save Item
+        </button>
+      </div>
       <ul>
-        <li v-for="item in shopItems">
-          {{ item }}
+        <li
+          v-for="item in reversedItems"
+          :class="{strikeout: item.purchased}"
+          @click="togglePurchased(item)"
+        >
+          {{ item.label }}
         </li>
       </ul>
+      <p v-if="shopItems.length === 0">Nice job! You've bought all itens</p>
     </div>
     <script>
       var vue = new Vue({
@@ -22,12 +53,45 @@
         data: {
           header: "shopping list",
           newItem: "",
-          shopItems: ["10 cokes", "5 hats", "15 cups"]
+          state: "default",
+          shopItems: [
+            {
+              label: "10 cokes",
+              purchased: false
+            },
+            {
+              label: "5 hats",
+              purchased: true
+            },
+            {
+              label: "2 bananas",
+              purchased: false
+            }
+          ]
+        },
+        computed: {
+          reversedItems() {
+            return this.shopItems.slice(0).reverse();
+          }
         },
         methods: {
-          addItem(){
-            this.shopItems.push(this.newItem);
+          addItem() {
+            var item = {
+              label: this.newItem,
+              purchased: false
+            };
+            this.shopItems.push(item);
+            this.cleanNewItem();
+          },
+          changeState(newState) {
+            this.state = newState;
+            this.cleanNewItem();
+          },
+          cleanNewItem() {
             this.newItem = "";
+          },
+          togglePurchased(item) {
+            item.purchased = !item.purchased;
           }
         }
       });
