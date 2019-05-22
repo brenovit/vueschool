@@ -16,8 +16,13 @@
           We travel the world to source the very best single origin coffee for
           you
         </h2>
-
-        <plan-picker></plan-picker>
+        <div class="plans">
+          <plan
+            v-for="plan in plans"
+            :name="plan.name"
+            :price="plan.price"
+          ></plan>
+        </div>
       </div>
     </div>
 
@@ -26,7 +31,15 @@
       </div>
     </script>
 
-    <script type="text/x-template" id="plan-picker-item-template"></script>
+    <script type="text/x-template" id="plan-template">
+      <div class="plan">
+        <div class="description">
+          <span class="title">
+            {{name}} | ${{price}}
+          </span>
+        </div>
+      </div>
+    </script>
 
     <script src="https://unpkg.com/vue"></script>
     <script src="app.js"></script>
