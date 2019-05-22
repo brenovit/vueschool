@@ -50,6 +50,14 @@
         <click-counter></click-counter>
       </div>
     </div>
+
+    <script type="text/x-template" id="click-counter-template">
+      <div>
+        <label>Counter: {{count}}</label>
+        <button @click="count++">+1</button>
+      </div>
+    </script>
+
     <script src="app.js"></script>
   </body>
 </html>
