@@ -4,14 +4,21 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta http-equiv="X-UA-Compatible" content="ie=edge" />
-    <title>VueSchool Projects</title>
+    <title>Vue.js Components Fundamentals</title>
   </head>
 
   <body>
-    <h2>Projects</h2>
-    <div id="app">
-      <a href="shop-list/index.html">Shop List</a> <br />
-      <a href="plan-picker/index.html">Plan Picker</a> <br />
+    <div id="app" class="container mx-auto py-6">
+      <div class="content">
+        <h1 class="title">Coffee Plans</h1>
+
+        <h2 class="subtitle">
+          We travel the world to source the very best single origin coffee for
+          you
+        </h2>
+
+        <plan-picker></plan-picker>
+      </div>
     </div>
 
     <script type="text/x-template" id="plan-picker-template">
