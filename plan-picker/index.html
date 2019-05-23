@@ -26,12 +26,16 @@
             v-for="plan in plans"
             :name="plan.name"
             :price="plan.price"
-          ></plan>
-        </div >
+            :selected-plan="selectedPlan"
+            @select="selectPlan"
+            ></plan>
+          </div >
     </script>
 
     <script type="text/x-template" id="plan-item-template">
-      <div class="plan">
+      <div class="plan"
+          @click="select"
+          :class="{'active-plan': isSelected}">
         <div class="description">
           <span class="title">
             {{name}} | ${{price}}
