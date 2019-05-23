@@ -1,0 +1,67 @@
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>GitHub Profile</title>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.4.1/semantic.min.css"
+    />
+  </head>
+
+  <body>
+    <div id="app" class="ui container">
+      <h1>GitHub Profiles</h1>
+      <github-profile-search></github-profile-search>      
+
+      <script type="text/x-template" id="github-profile-search-template">
+        <div>
+          <github-profile-input></github-profile-input>
+          <div v-if="user !== null">
+            <github-user-card></github-user-card>
+          </div>
+        </div>
+      </script>
+
+      <script type="text/x-template" id="github-profile-input-template">
+        <div class="ui input">
+          <input v-model="userLogin" type="text" placeholder="Search..." @keyup.enter="searchUser">
+        </div>
+      </script>
+
+      <script type="text/x-template" id="github-profile-card-template">
+        <div class="ui card">
+          <div class="image">
+            <img :src="avatar_url" />
+          </div>
+          <div class="content">
+            <a class="header" :href="login_url">{{name}}</a>
+            <div class="meta">
+              <span class="date">Joined in {{createdAtDate}}</span>
+            </div>
+            <div class="description">
+              {{bio}}
+            </div>
+          </div>
+          <div class="extra content">
+            <a>
+              <i class="users icon"></i>
+              {{following}} Following
+            </a>
+            <a>
+              <i class="code icon"></i>
+              {{public_repos}} Repos
+            </a>
+          </div>
+        </div>
+      </div>
+    </script>
+
+    <!-- Import Vue.js and axios -->
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <script src="http://momentjs.com/downloads/moment.min.js"></script>
+    <script src="https://unpkg.com/vue"></script>
+    <script src="app.js"></script>
+  </body>
+</html>
