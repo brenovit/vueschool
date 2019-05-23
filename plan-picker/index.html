@@ -22,17 +22,17 @@
 
     <script type="text/x-template" id="plan-picker-template">
       <div class="plans">
-          <plan
+          <plan-picker-item
             v-for="plan in plans"
             :name="plan.name"
             :price="plan.price"
             :selected-plan="selectedPlan"
             @select="selectPlan"
-            ></plan>
+            ></plan-picker-item>
           </div >
     </script>
 
-    <script type="text/x-template" id="plan-item-template">
+    <script type="text/x-template" id="plan-picker-item-template">
       <div class="plan"
           @click="select"
           :class="{'active-plan': isSelected}">
