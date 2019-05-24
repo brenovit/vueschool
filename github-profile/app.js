@@ -1,37 +1,20 @@
-let GitHubProfileCardComponent = {
-  template: "#github-profile-card-template",
-  data() {
-    return {
-      apiUrl: "https://api.github.com/users/",
-      name: "Breno Nunes",
-      login: "brenovit",
-      avatar_url: "https://avatars0.githubusercontent.com/u/15836714?v=4",
-      bio:
-        "C#, Java, Spring, ReactJS, VueJS, JavaScript, HTML, MySQL, SQL Server, Oracle, Unity, Git, Maven, Docker, Jenkins, Ant",
-      public_repos: 48,
-      following: 40,
-      created_at: "2015-11-13T17:19:39Z",
-      login_url: "https://github.com/brenovit"
-    };
-  },
+let GitHubProfileUserCardComponent = {
+  template: "#github-profile-user-card-template",
+  props: [
+    "name",
+    "login",
+    "avatar_url",
+    "bio",
+    "public_repos",
+    "following",
+    "created_at"
+  ],
   computed: {
     createdAtDate() {
       return moment(String(this.created_at)).format("MM/DD/YYYY hh:mm");
-    }
-  },
-  methods: {
-    searchUser(login) {
-      let apiUrlUser = this.apiUrl + this.userLogin;
-      axios
-        .get(apiUrlUser)
-        .then(function(response) {
-          if (response.status === 200) {
-            console.log(response.data);
-          }
-        })
-        .catch(function(error) {
-          console.log(error);
-        });
+    },
+    loginUrl() {
+      return "https://github.com/" + this.login;
     }
   }
 };
@@ -44,15 +27,69 @@ let GitHubProfileInputComponent = {
     };
   },
   methods: {
-    searchUser() {}
+    searchByUserLogin() {
+      this.$emit("searchUserByLogin", this.userLogin);
+      this.userLogin = "";
+    }
+  }
+};
+
+let GitHubProfileClearButtonComponent = {
+  template: "#github-profile-clear-button-template",
+  methods: {
+    clearList() {
+      this.$emit("clearUserList");
+    }
   }
 };
 
 let GitHubProfileSearchComponent = {
   template: "#github-profile-search-template",
   components: {
-    "github-user-card": GitHubProfileCardComponent,
-    "github-profile-input": GitHubProfileInputComponent
+    "github-profile-user-card": GitHubProfileUserCardComponent,
+    "github-profile-input": GitHubProfileInputComponent,
+    "github-profile-clear-button": GitHubProfileClearButtonComponent
+  },
+  data() {
+    return {
+      apiUrl: "https://api.github.com/users/",
+      users: []
+    };
+  },
+  methods: {
+    searchUser(userLogin) {
+      let apiUrlUser = this.apiUrl + userLogin;
+      let user = null;
+      axios
+        .get(apiUrlUser)
+        .then(function(response) {
+          if (response.status === 200) {
+            user = getUserFromResponseData(response.data);
+          }
+        })
+        .catch(function(error) {
+          alert("User not found");
+          console.log(error);
+        });
+      if (user !== null) {
+        this.users.push(user);
+      }
+    },
+    getUserFromResponseData(responseData) {
+      let userData = responseData;
+      return {
+        name: userData.name,
+        login: userData.login,
+        avatar_url: userData.avatar_url,
+        bio: userData.bio,
+        public_repos: userData.public_repos,
+        following: userData.following,
+        created_at: userData.created_at
+      };
+    },
+    clearList() {
+      this.users = [];
+    }
   }
 };
 

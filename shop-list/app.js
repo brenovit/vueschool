@@ -13,20 +13,7 @@ new Vue({
     header: "shopping list",
     newItem: "",
     state: "default",
-    shopItems: [
-      {
-        label: "10 cokes",
-        purchased: false
-      },
-      {
-        label: "5 hats",
-        purchased: true
-      },
-      {
-        label: "2 bananas",
-        purchased: false
-      }
-    ]
+    shopItems: getShopItems()
   },
   computed: {
     reversedItems() {
@@ -54,3 +41,20 @@ new Vue({
     }
   }
 });
+
+function getShopItems() {
+  return [
+    {
+      label: "10 cokes",
+      purchased: false
+    },
+    {
+      label: "5 hats",
+      purchased: true
+    },
+    {
+      label: "2 bananas",
+      purchased: false
+    }
+  ];
+}

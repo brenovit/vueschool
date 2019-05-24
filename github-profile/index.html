@@ -13,45 +13,66 @@
   <body>
     <div id="app" class="ui container">
       <h1>GitHub Profiles</h1>
-      <github-profile-search></github-profile-search>      
+
+      <github-profile-search></github-profile-search>
 
       <script type="text/x-template" id="github-profile-search-template">
         <div>
-          <github-profile-input></github-profile-input>
-          <div v-if="user !== null">
-            <github-user-card></github-user-card>
+          <github-profile-input @searchUserByLogin="searchUser"></github-profile-input>
+          <github-profile-clear-button @clearUserList="clearList" @click="clearList"></github-profile-clear-button>
+          <div class="ui divider">
+            <div v-if="users.length === 0" class="ui text">
+              <p>Search a GitHub user to show their details bellow</p>
+            </div>
           </div>
+          <div class="ui link cards">
+            <github-profile-user-card 
+              v-for="user in users"
+                :name="user.name"
+                :login="user.login"
+                :avatar_url="user.avatar_url"
+                :bio="user.bio"
+                :public_repos="user.public_repos"
+                :following="user.following"
+                :created_at="user.created_at"
+              ></github-profile-user-card>
+          </div>
+          
         </div>
+      </script>
+
+      <script type="text/x-template" id="github-profile-clear-button-template">
+        <button class="ui button" @click="clearList">Clear</button>
       </script>
 
       <script type="text/x-template" id="github-profile-input-template">
         <div class="ui input">
-          <input v-model="userLogin" type="text" placeholder="Search..." @keyup.enter="searchUser">
-        </div>
+            <input v-model="userLogin" type="text" placeholder="Search..." @keyup.enter="searchByUserLogin">
+          </div>
       </script>
 
-      <script type="text/x-template" id="github-profile-card-template">
-        <div class="ui card">
+      <script type="text/x-template" id="github-profile-user-card-template">
+        <div class="card">
           <div class="image">
             <img :src="avatar_url" />
           </div>
           <div class="content">
-            <a class="header" :href="login_url">{{name}}</a>
+            <a class="header" :href="loginUrl"> {{ login }}</a>
             <div class="meta">
-              <span class="date">Joined in {{createdAtDate}}</span>
+              <span class="date">Joined in createdAtDate</span>
             </div>
             <div class="description">
-              {{bio}}
+              bio
             </div>
           </div>
           <div class="extra content">
             <a>
               <i class="users icon"></i>
-              {{following}} Following
+              following Following
             </a>
             <a>
               <i class="code icon"></i>
-              {{public_repos}} Repos
+              public_repos Repos
             </a>
           </div>
         </div>
@@ -59,9 +80,9 @@
     </script>
 
     <!-- Import Vue.js and axios -->
-    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
-    <script src="http://momentjs.com/downloads/moment.min.js"></script>
-    <script src="https://unpkg.com/vue"></script>
-    <script src="app.js"></script>
+    <script type="application/javascript" src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <script type="application/javascript" src="http://momentjs.com/downloads/moment.min.js"></script>
+    <script type="application/javascript" src="https://unpkg.com/vue"></script>
+    <script type="application/javascript" src="app.js"></script>
   </body>
 </html>
