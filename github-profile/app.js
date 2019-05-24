@@ -46,9 +46,9 @@ let GitHubProfileClearButtonComponent = {
 let GitHubProfileSearchComponent = {
   template: "#github-profile-search-template",
   components: {
-    "github-profile-user-card": GitHubProfileUserCardComponent,
     "github-profile-input": GitHubProfileInputComponent,
-    "github-profile-clear-button": GitHubProfileClearButtonComponent
+    "github-profile-clear-button": GitHubProfileClearButtonComponent,
+    "github-profile-user-card": GitHubProfileUserCardComponent
   },
   data() {
     return {
@@ -59,24 +59,25 @@ let GitHubProfileSearchComponent = {
   methods: {
     searchUser(userLogin) {
       let apiUrlUser = this.apiUrl + userLogin;
-      let user = null;
+      let userData = null;
       axios
         .get(apiUrlUser)
-        .then(function(response) {
-          if (response.status === 200) {
-            user = getUserFromResponseData(response.data);
-          }
+        .then(response => {
+          userData = response.data;
         })
-        .catch(function(error) {
+        .catch(error => {
           alert("User not found");
           console.log(error);
+        })
+        .finally(() => {
+          console.log(userData);
+          if (userData !== null) {
+            let user = this.getUserFromResponseData(userData);
+            this.users.push(user);
+          }
         });
-      if (user !== null) {
-        this.users.push(user);
-      }
     },
-    getUserFromResponseData(responseData) {
-      let userData = responseData;
+    getUserFromResponseData(userData) {
       return {
         name: userData.name,
         login: userData.login,
@@ -93,8 +94,8 @@ let GitHubProfileSearchComponent = {
   }
 };
 
-new Vue({
-  el: "#app",
+let vue = new Vue({
+  el: "#root",
   components: {
     "github-profile-search": GitHubProfileSearchComponent
   }
