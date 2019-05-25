@@ -18,6 +18,11 @@
     </div>
     <script type="text/x-template" id="github-profile-search-template">
       <div>
+        <div v-if="notificationMessage != null">
+          <notification-message type="error" header="Error">
+            {{notificationMessage}}
+          </notification-message>
+        </div>
         <github-profile-input @searchUserByLogin="searchUser"></github-profile-input>
         <github-profile-clear-button @clearUserList="clearList" @click="clearList"></github-profile-clear-button>
 
@@ -78,6 +83,17 @@
             </a>
           </div>
       </div>
+    </script>
+
+    <script type="text/x-template" id="notification-message-template">
+      <!-- Types: info, warning, error, success -->
+      <div class="ui message" :class="type" v-if="!hidden">
+          <i class="close icon" @click="hide"></i>
+          <div class="header">
+            {{header}}
+          </div>
+          <slot></slot>
+        </div>
     </script>
 
     <!-- Import Vue.js and axios -->

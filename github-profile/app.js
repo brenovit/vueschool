@@ -1,3 +1,28 @@
+let NotificationMessageComponente = {
+  template: "#notification-message-template",
+  props: {
+    type: {
+      type: String,
+      default: "info"
+    },
+    header: {
+      type: String,
+      default: "Information"
+    }
+  },
+  data() {
+    return {
+      hidden: false
+    };
+  },
+  computed: {},
+  methods: {
+    hide() {
+      this.hidden = true;
+    }
+  }
+};
+
 let GitHubProfileUserCardComponent = {
   template: "#github-profile-user-card-template",
   props: [
@@ -48,12 +73,14 @@ let GitHubProfileSearchComponent = {
   components: {
     "github-profile-input": GitHubProfileInputComponent,
     "github-profile-clear-button": GitHubProfileClearButtonComponent,
-    "github-profile-user-card": GitHubProfileUserCardComponent
+    "github-profile-user-card": GitHubProfileUserCardComponent,
+    "notification-message": NotificationMessageComponente
   },
   data() {
     return {
       apiUrl: "https://api.github.com/users/",
-      users: []
+      users: [],
+      notificationMessage: null
     };
   },
   methods: {
@@ -66,7 +93,7 @@ let GitHubProfileSearchComponent = {
           userData = response.data;
         })
         .catch(error => {
-          alert("User not found");
+          this.notificationMessage = "User not found";
           console.log(error);
         })
         .finally(() => {
@@ -94,7 +121,7 @@ let GitHubProfileSearchComponent = {
   }
 };
 
-let vue = new Vue({
+new Vue({
   el: "#root",
   components: {
     "github-profile-search": GitHubProfileSearchComponent
