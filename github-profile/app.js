@@ -19,6 +19,7 @@ let NotificationMessageComponente = {
   methods: {
     hide() {
       this.hidden = true;
+      this.$emit("hideNotification");
     }
   }
 };
@@ -97,10 +98,11 @@ let GitHubProfileSearchComponent = {
           console.log(error);
         })
         .finally(() => {
-          console.log(userData);
           if (userData !== null) {
-            let user = this.getUserFromResponseData(userData);
-            this.users.push(user);
+            let userToAdd = this.getUserFromResponseData(userData);
+            if (!this.users.some(user => user.login === userToAdd.login)) {
+              this.users.push(userToAdd);
+            }
           }
         });
     },
@@ -114,6 +116,9 @@ let GitHubProfileSearchComponent = {
         following: userData.following,
         created_at: userData.created_at
       };
+    },
+    hideNotification() {
+      this.notificationMessage = null;
     },
     clearList() {
       this.users = [];

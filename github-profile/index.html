@@ -18,13 +18,14 @@
     </div>
     <script type="text/x-template" id="github-profile-search-template">
       <div>
+        <github-profile-input @searchUserByLogin="searchUser"></github-profile-input>
+        <github-profile-clear-button @clearUserList="clearList" @click="clearList"></github-profile-clear-button>
+
         <div v-if="notificationMessage != null">
-          <notification-message type="error" header="Error">
+          <notification-message type="error" header="Error" @hideNotification="hideNotification">
             {{notificationMessage}}
           </notification-message>
         </div>
-        <github-profile-input @searchUserByLogin="searchUser"></github-profile-input>
-        <github-profile-clear-button @clearUserList="clearList" @click="clearList"></github-profile-clear-button>
 
         <div class="ui divider">
           <div v-if="users.length === 0" class="ui text">
@@ -87,7 +88,7 @@
 
     <script type="text/x-template" id="notification-message-template">
       <!-- Types: info, warning, error, success -->
-      <div class="ui message" :class="type" v-if="!hidden">
+      <div class="ui message" :class="type" v-if="!hidden" @click="hide">
           <i class="close icon" @click="hide"></i>
           <div class="header">
             {{header}}
